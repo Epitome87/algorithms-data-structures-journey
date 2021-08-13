@@ -1,0 +1,310 @@
+Common Array Operations to Know
+
+* Create an Array:
+* Access an Array item using the index position
+* Loop over an Array* Add an item to the end of an Array
+* Remove an item from the end of an Array
+* Remove an item from teh beginning of an Array
+* Add an item to the beginning of an Array
+* Find the index of an item in the Array
+* Remove an item by index position
+* Remove items from an index position
+* Copy an Array
+
+Acessing Array Elements
+Relationship between length and numerical properties
+Creating an array usingi the result of a match
+
+Properties to Master
+    length
+
+
+10 Methods to Perfect
+    
+    Array.isArray()
+    Array.from()
+    Array.of()
+    concat()
+    constructor
+    copyWithin()
+    entries()
+    every()
+    fill()
+    filter()  
+    find()
+    findIndex()
+    firstIndex()  ????
+    flat()          ???
+    flatMap()       ???
+    forEach()
+    includes()
+    indexOf()
+    join()
+    keys()
+    lastIndexOf()
+    map()
+    pop()
+    prototype
+    push()
+    reduce()
+    reduceRight()
+    reverse()
+    shift()
+    slice()
+    some()
+    sort()
+    splice()
+    toString()
+    unshift()
+    valueOf()
+
+
+    
+
+
+Cheatsheet #1: https://devhints.io/js-array
+
+Adding Items
+        concat()
+        push()
+        unshift()
+        splice()
+
+    Replace items
+        splice()
+
+    Iterables
+        filter()
+        find()
+        findIndex()
+        every()
+        some()
+        map()
+        reduce()
+        reduceRight()
+
+    Subsets
+        slice()
+
+
+    Inserting Items
+        splice()  
+
+    Removing Items  
+        pop()
+        shift()
+        splice()
+
+
+Cheatsheet #2: https://www.shortcutfoo.com/app/dojos/javascript-arrays/cheatsheet
+
+
+Accessing Elements I
+a1.concat(a2)
+Return new array by joining arrays a1 and a2 together
+
+a1.join(separator)
+Join all elements of array a1 into a string separated by separator arg
+
+a1.slice(start, end)
+Extract a section from start to end of array a1 and return a new array
+
+a1.indexOf(obj)
+Return first index of obj within array a1
+
+a1.lastIndexOf(obj)
+Return last index of obj within array a1
+
+Iterating I
+a1.forEach(fn)
+Calls function fn for each element in the array a1
+
+a1.every(fn)
+Return true if every element in array a1 satisfies provided testing function fn
+
+a1.some(fn)
+Return true if at least one element in array a1 satisfies provided testing function fn
+
+a1.filter(fn)
+Create a new array with all elements of array a1 which pass the filtering function fn
+
+Iterating II
+a1.map(fn)
+Create a new array with results of calling function fn on every element in array a1
+
+a1.reduce(fn)
+Apply a function fn against an accumulator and each value (from left to right) of the array as to reduce it to a single value
+
+a1.reduceRight(fn)
+Apply a function fn against an accumulator and each value (from right to left) of the array as to reduce it to a single value
+
+Mutating I
+a1.pop()
+Remove and return last element from array a1
+
+a1.push(obj)
+Add obj to end of array a1 and return new length
+
+a1.reverse()
+Reverse order of elements of array a1 in place
+
+a1.sort()
+Sort the elements of array a1 in place
+
+a1.splice(start, deleteCount, items)
+Change content of array a1 by removing existing elements and/or adding new elements
+
+a1.unshift(obj)
+Add obj to start of array a1 and return new length
+
+General I
+a1.toString()
+Return a string representing array a1 and its elements (same as a1. join(','))
+
+a1.toLocaleString()
+Return a localized string representing array a1 and its elements (similar to a1.join(','))
+
+Array.isArray(var)
+Return true if var is an array
+
+a1.length
+Return length of array a1
+
+a1[0]
+Access first element of array a1 
+
+
+
+From MDN:
+
+Constructor
+
+Array()
+
+    Creates a new Array object.
+
+Static properties
+
+get Array[@@species]
+
+    The constructor function is used to create derived objects.
+
+
+Static methods
+
+Array.from()
+
+    Creates a new Array instance from an array-like or iterable object.
+Array.isArray()
+
+    Returns true if the argument is an array, or false otherwise.
+Array.of()
+
+    Creates a new Array instance with a variable number of arguments, regardless of number or type of the arguments.
+
+
+Instance properties
+
+Array.prototype.length
+
+    Reflects the number of elements in an array.
+Array.prototype[@@unscopables]
+
+    A symbol containing property names to exclude from a with binding scope.
+
+
+Instance methods
+
+Array.prototype.at()
+
+    Returns the array item at the given index. Accepts negative integers, which count back from the last item.
+Array.prototype.concat()
+
+    Returns a new array that is this array joined with other array(s) and/or value(s).
+Array.prototype.copyWithin()
+
+    Copies a sequence of array elements within the array.
+Array.prototype.entries()
+
+    Returns a new Array Iterator object that contains the key/value pairs for each index in the array.
+Array.prototype.every()
+
+    Returns true if every element in this array satisfies the testing function.
+Array.prototype.fill()
+
+    Fills all the elements of an array from a start index to an end index with a static value.
+Array.prototype.filter()
+
+    Returns a new array containing all elements of the calling array for which the provided filtering function returns true.
+Array.prototype.find()
+
+    Returns the found element in the array, if some element in the array satisfies the testing function, or undefined if not found.
+Array.prototype.findIndex()
+
+    Returns the found index in the array, if an element in the array satisfies the testing function, or -1 if not found.
+Array.prototype.forEach()
+
+    Calls a function for each element in the array.
+Array.prototype.includes()
+
+    Determines whether the array contains a value, returning true or false as appropriate.
+Array.prototype.indexOf()
+
+    Returns the first (least) index of an element within the array equal to an element, or -1 if none is found.
+Array.prototype.join()
+
+    Joins all elements of an array into a string.
+Array.prototype.keys()
+
+    Returns a new Array Iterator that contains the keys for each index in the array.
+Array.prototype.lastIndexOf()
+
+    Returns the last (greatest) index of an element within the array equal to an element, or -1 if none is found.
+Array.prototype.map()
+
+    Returns a new array containing the results of calling a function on every element in this array.
+Array.prototype.pop()
+
+    Removes the last element from an array and returns that element.
+Array.prototype.push()
+
+    Adds one or more elements to the end of an array, and returns the new length of the array.
+Array.prototype.reduce()
+
+    Apply a function against an accumulator and each value of the array (from left-to-right) as to reduce it to a single value.
+Array.prototype.reduceRight()
+
+    Apply a function against an accumulator and each value of the array (from right-to-left) as to reduce it to a single value.
+Array.prototype.reverse()
+
+    Reverses the order of the elements of an array in place. (First becomes the last, last becomes first.)
+Array.prototype.shift()
+
+    Removes the first element from an array and returns that element.
+Array.prototype.slice()
+
+    Extracts a section of the calling array and returns a new array.
+Array.prototype.some()
+
+    Returns true if at least one element in this array satisfies the provided testing function.
+Array.prototype.sort()
+
+    Sorts the elements of an array in place and returns the array.
+Array.prototype.splice()
+
+    Adds and/or removes elements from an array.
+Array.prototype.toLocaleString()
+
+    Returns a localized string representing the array and its elements. Overrides the Object.prototype.toLocaleString() method.
+Array.prototype.toString()
+
+    Returns a string representing the array and its elements. Overrides the Object.prototype.toString() method.
+Array.prototype.unshift()
+
+    Adds one or more elements to the front of an array, and returns the new length of the array.
+Array.prototype.values()
+
+    Returns a new Array Iterator object that contains the values for each index in the array.
+Array.prototype[@@iterator]()
+
+    Returns a new Array Iterator object that contains the values for each index in the array.
