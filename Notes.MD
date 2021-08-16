@@ -330,7 +330,77 @@ function quickSort(array, start = 0, end = array.length - 1) {
 
 ## Section 17: Radix Sort
 
-- TODO
+### Radix Sort - Introduction
+
+- Best average case time complexity for comparison sorts: n log n
+  - But we can do better! With..
+- Radix Sort:
+  - Special sorting algorithm that works on lists of numbers
+  - It never makes comparisons between elements!
+  - Exploits the fact that info about the size of a number is encoded in the number of digits
+
+### Radix Sort - Helper Methods
+
+- In order to implement Radix Sort, it's helpful to build a few helper functions first
+
+  - getDigit(num, place) - returns the digit in num at the given palce value. Two strategies:
+
+    - 1. Convert into a string, then back into a number. Problem: Strings are indexed from left side
+    - 2. Each position represents a power to the 10. Divide by that power of 10
+
+    ```js
+    function getDigit(num, i) {
+      return Math.floor(Math.abs(num) / Math.pow(10, i)) % 10;
+    }
+
+    getDigit(7323,2);
+    <!-- Steps: 1) 7323/100  = 73.23 2) Floor(73.23) = 73 3) 73%10 = 3 -->
+    ```
+
+  - digitCount(num) = returns the number of digits in num
+
+    ```js
+    function digitCount(num) {
+      if (num === 0) return 1;
+      return Math.floor(Math.log10(Math.abs(num))) + 1;
+    }
+
+    digitCount(423);
+    <!-- Steps: Ask: "10 to what power gives us 423?" 1) Math.log10(423) = 2.6263 2) Floor(2.6263) = 2 3) Add 1: 2 + 1 = 3 -->
+    ```
+
+  - mostDigits(nums) = Given an array of numbers, returns the number of digits in the largest numbers in the list
+    ```js
+    function mostDigits(nums) {
+      let maxDigits = 0;
+      for (let i = 0; i < nums.length; i++) {
+        maxDigits = Math.max(maxDigits, digitCount(nums[i]));
+      }
+      return maxDigits;
+    }
+    ```
+
+### Radix Sort - Psuedocode
+
+- Define a function that accepts a list of numbers
+- Figure out how many digits the largest number has
+- Loop from k = 0 up to this largest number of digits
+- For each iteration of the loop:
+  - Create buckets for each digit (0 to 9)
+  - Place each number in the corresponding bucket based on its kth digit
+- Replace our existing array with values in our buckets, starting with 0 and goig up to 9
+- Return list at the end
+
+### Radix Sort - BIG O Complexity
+
+- | Time Complexity (Best) | Time Complexity (Avg) | Time Complexity (Worst) | Space Complexity |
+  | ---------------------- | --------------------- | ----------------------- | ---------------- |
+  | O(nk)                  | O(nk)                 | O(nk)                   | O(n + k)         |
+
+- n - Length of array
+- k - Number of digits (average)
+
+- Typically, this is argued to be the same as O(n log n) due to how computers store numbers in memory
 
 ## Section 18: Data Structures - Introduction
 
@@ -487,4 +557,7 @@ function quickSort(array, start = 0, end = array.length - 1) {
     -
 
   const data = Array.apply(null, { length: 10 }).map(Function.call, Math.random);
+
+```
+
 ```
