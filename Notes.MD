@@ -558,6 +558,240 @@ function quickSort(array, start = 0, end = array.length - 1) {
 
   const data = Array.apply(null, { length: 10 }).map(Function.call, Math.random);
 
-```
+## Section 20: Doubly-Linked Lists
+
+## Section 21: Stacks and Queues
+
+### Introduction to Stacks
+
+- What is a Stack?
+  - A LIFO data structure
+    - The last element added to the stack will be the first element removed from the stack
+    - The first element added in will be the last thing to be removed
+    - Think about a stack of plates
+- Where are Stacks used?
+  - Managing function invocations (the call stack)
+  - Undo / Redo functionality
+  - Routing (the history object) is treated like a stack
+  - Common algorithms
+
+### Creating a Stack with an Array
+
+- More than one way to implement a Stack
+- Array Implementation is the easiest way:
+  ```js
+  const stack = [];
+  stack.push('google');
+  stack.push('instagram');
+  stack.push('youtube');
+  let lastSite = stack.pop();
+  ```
+  or
+  ```js
+  stack.unshift('create new file');
+  stack.unshif('resized file');
+  stack.unshift('cloned out wrinkle');
+  let lastAction = stack.shift();
+  ```
+- Adding and removing from the beginning of an Array is _not good_! So the unshift/shift method is not ideal
+- Array in general is not the most ideal way. Linked List would be better (no bloat of superfluous Array methods)
+
+### Writing Our Own Stack From Scratch
+
+- Pushing and Popping are different than our Singly-Linked List implementation...
+  - We were dealing with the end of the List in that data structure. But that's bad for Stacks -- we need O(N) push/pop!
+- Pushing Pseudocode:
 
 ```
+  * The function should accept a value
+  * Create a new node with that value
+  * If there are no nodes in teh stack, set the first and last property to be the newly created node
+  * If there is at least one node, create a variable that stores the current first property on the stack
+  * Reset the first property to be the newly created node
+  * Set the next property on the node to be the previously created variable
+  * Increment the size of the stack by 1, and return it
+```
+
+- Popping Pseudocode:
+
+```
+  * If there are no nodes in the stack, return null
+  * Else, create a temporary variable to store the first property on the stack
+  * If there is only 1 node, set the first and last property to be null
+  * If there is more than one mode, set the first property to be the next property on the current first
+  * Decrement the size by 1
+  * Return the value of the node removed
+```
+
+```js
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+
+  class Stack {
+    constructor() {
+      this.first = null;
+      this.last = null;
+      this.size = 0;
+    }
+    push(value) {
+      let newNode = new Node(value);
+      if (!this.first) {
+        this.first = newNode;
+        this.last = newNode;
+      } else {
+        let temp = this.first;
+        this.first = newNode;
+        this.first.next = temp;
+      }
+
+      // Increment size, and return it
+      return ++this.size;
+    }
+    pop(value) {
+      if (!this.first) return null;
+
+      let temp = this.first;
+
+      //  Only one node?
+      if (this.first === this.last) {
+        this.last = null;
+      }
+
+      this.first = this.first.next;
+      this.size--;
+
+      return temp.value;
+    }
+  }
+}
+```
+
+### Big O of Stacks
+
+- Insertion - O(1)
+- Removal - O(1)
+- Searching - O(N)
+- Access - O(N)
+
+- _Note_: Stacks really prioritize insertion and removal!
+- Recap:
+  - Stacks are a LIFO data structure where the last value in is always the first one out
+  - Stacks are not a built-in data structure in JS, but are relatively simple to implement
+
+### Introduction to Queues
+
+- What is a Queue?
+  - Similiar to Stack
+  - A FIFO data structure: First In First Out
+  - Think of a waiting line ("queue" in other countries)
+- Where are they used?
+  - Background tasks
+  - Uploading resources
+  - Printing / Task processing
+- Can implement with Array or our own Queue class
+
+### Creating Queues Using Arrays
+
+```js
+// Push is okay. But removing from the beginning shifts everything over
+let queue = [];
+queue.push('FIRST');
+queue.push('SECOND');
+queue.push('THIRD');
+queue.shift(); // Removes "First"
+queue.shift(); // Removes "Second"
+queue.shift(); // Removes "Third"
+
+// Or: Popping works well, but unshift requires re-index of every element
+let queue = [];
+queue.unshift('FIRST');
+queue.unshift('SECOND');
+queue.unshift('THIRD');
+queue.pop(); // Removes First
+queue.pop(); // Removes "Second"
+queue.pop(); // Removes "THIRD"
+```
+
+- Unlike with a Stack, an Array can't really handle the FIFO nature without the need of a Linked List for O(1) insertion/removal
+  - So it's almost necessary to create our own Queue class!
+
+## Writing Our Own Queue From Scratch
+
+- Enqueue Pseudocode:
+
+  - This function accepts some value
+  - Create a new node using that value passed to the function
+  - If there are no nodes in the queue, set this node to be the first and last property of the queue
+  - Otherwise, set the next property on the current last to be that node, and then set the last property of the queue to be that node
+
+- Dequeue Pseudocode:
+  - If there is no first property, just return null
+  - Store the first property in a variable
+  - See if the first is the same as the last (check if there is only1 node). If so, set the first and last to be null
+  - If there is more than 1 node, set the first property to be the next property of first
+  - Decrement the size by 1
+  - Return the value of the node dequeued
+
+```js
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
+class Queue {
+  constructor() {
+    this.first = null;
+    this.last = null;
+    this.size = 0;
+  }
+  enqueue(value) {
+    let newNode = new Node(value);
+    if (!this.first) {
+      this.first = newNode;
+      this.last = newNode;
+    } else {
+      this.last.next = newNode;
+      this.last = newNode;
+    }
+
+    return ++this.size;
+  }
+
+  dequeue() {
+    if (!this.first) {
+      return null;
+    }
+
+    let temp = this.first;
+
+    if (this.first === this.last) {
+      this.last = null;
+    }
+
+    this.first = this.first.next;
+
+    this.size--;
+
+    return temp.value;
+  }
+}
+```
+
+### Big O of Queues
+
+- Insertion - O(1)
+- Removal - O(1)
+- Searching - O(N)
+- Access - O(N)
+
+- _Note_ With array it was not constant time due to re-indexing!
+
+- Recap:
+  - Queues are a FIFO data structure; all elements are first in first out
+  - Queues are useful for processing tasks and are foundational for more complex data structures and algorithms
+  - Insertion and Removal _needs_ be done in O(1) -- otherwise we are using a Stack/Queue for nothing!
