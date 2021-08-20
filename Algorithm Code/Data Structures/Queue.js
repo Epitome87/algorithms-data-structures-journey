@@ -66,7 +66,7 @@ class Queue {
     // More than one item in Queue, our first now points to its "next"
     this.first = this.first.next;
 
-    // Decremetn the size of Queue by 1
+    // Decrement the size of Queue by 1
     this.size--;
 
     // And finally, return the value of the item that was removed
