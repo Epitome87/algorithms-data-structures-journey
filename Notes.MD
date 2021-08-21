@@ -560,6 +560,392 @@ function quickSort(array, start = 0, end = array.length - 1) {
 
 ## Section 20: Doubly-Linked Lists
 
+### Doubly Linked Lists Introduction
+
+- Almost identical to Singly Linked Lists, except every node has another pointer - to the previous node!
+- Don't have to traverse entire list to remove the last item (like Singly Linked); can just work backwards!
+- Huge pain to go backwards in Singly Linked List; very simple with Doubly Linked List!
+- However, Doubly uses more memory! ☹
+
+### Setting Up Our Node Class
+
+- The _finished_ Node class:
+
+```js
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+    this.previous = null;
+  }
+}
+```
+
+- The _starter_ DoublyLinkedList class:
+
+```js
+class DoublyLinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
+  }
+}
+```
+
+### Push
+
+- Adding a Node to the _end_ of the Doubly Linked List
+
+- Push Pseudocode:
+  - Create a new Node with the value passed to the function
+  - If the head property is null (or length 0) set the head and tail to be the newly created node
+  - If not, set the next property on the tail to be that node
+  - Set the previous property on the newly created node to be the tail
+  - Set the tail to be the newly created tail
+
+```js
+push(value) {
+  // Create a new Node
+  let newNode = new Node(value);
+
+  //  If list is empty (can also check if length === 0)
+  if (!this.head) {
+    this.head = newNode;
+    this.tail = newNode;
+  }
+
+  else {
+    // Set the tail's "next" to be the newly-created Node
+    this.tail.next = newNode;
+
+    // Set this newly-created Node's "previous" to be our current (soon to be old) "tail"
+    newNode.previous = this.tail;
+
+    // Set the tail to be the newly-created node
+    this.tail = newNode;
+
+    // Set this newly-created Node's "next" to be null -- no items exist past this node yet
+    // newNode.next = null; // Not necessary; we do this by default in Node constructor
+    }
+
+    // Increment length to reflect adding the new node
+    this.length++;
+
+    // Return the list
+    return this;
+}
+```
+
+### Pop
+
+- Removing a Node from the _end_ of the Doubly Linked List
+- Pop Pseudocode:
+  - If there is no head (or tail, or length 0) return undefined
+  - Otherwise, store the current tail in a variable to return later
+  - Special case: If the length is 1, set the head and tail to be null
+  - Update the tail to be the previous Node
+  - Set the _new_ tail's "next" to be null
+  - Decrement the length
+  - Return the value that was removed
+- **NOTE** we want to cut off all linkages from the returned value to the List (i.e set its next and previous to null)
+
+```js
+pop() {
+  // If empty List, nothing to remove!
+  if (!this.head) {
+    return undefined;
+  }
+
+  // Store our current tail; we want to return this as the value we removed!
+  let removedNode = this.tail;
+
+  if (this.length === 1) {
+    this.head = null;
+    this.tail = null;
+  }
+
+  else {
+    // Change tail to be its previous
+    this.tail = removedNode.previous;
+
+    // Ensure there is no pointer to a next node from our tail, as our tail is the last item
+    this.tail.next = null;
+
+    // Also clean up the pointers for our removed node
+    removedNode.prev = null;
+  }
+
+  // Decrement the length
+  this.length--;
+
+  // Return the item that was removed, as stored earlier
+  return removedNode;
+}
+```
+
+### Shift
+
+- Removing a Node from the _beginning_ of the Doubly Linked List
+- Shift Pseudocode:
+  - If the length is 0, return undefined
+  - Otherwise, store the current head property in a variable (old head)
+  - Special case: If the length is one:
+    - Set the head to be null
+    - Set the tail to be null
+  - Otherwise, update the head to be the next of the old head
+  - Set the head's previous property to null
+  - Set the old head's next to null
+  - Decrement the length
+  - Return the old head
+
+```js
+shift() {
+  if (!this.head) return undefined;
+
+// Store the current head
+  let removedHead = this.head;
+
+  // Simple case for when there is only one Node in list
+  if (this.length === 1) {
+    this.head = null;
+    this.tail = null;
+  } else {
+    // Update the head to be the "next" of the old head
+    this.head = removedHead.next;
+
+    // Set the new head's previous property to null
+    this.head.previous = null;
+
+    // Set the old head's "next" to be null
+    removedHead.next = null;
+  }
+
+  // Decrement the length of the list by 1
+  this.length--;
+
+  // Return the old head that was just removed
+  return removedHead;
+}
+```
+
+### Unshift
+
+- Adding a Node to the _beginning_ of the Doubly Linked List
+- Unshift Pseudocode:
+  - Create a new Node with the value passed to the function
+  - If the length is 0:
+    - Set the head to be the new node
+    - Set the tail to be the new node
+  - Otherwise:
+    - Set the previous property on the head of the list to be the new node
+    - Set the next property on the new node to be the head property
+    - Update the head to be the new node
+  - Increment the length
+  - Return the list
+
+```js
+// Create new node
+// Set its next to be the current head
+// Set the current head's previous to be new node
+// Set head to be new node
+unshift(value) {
+  // Create a new Node with the value passed in
+  let newNode = new Node(value);
+
+  // If the list is empty...
+  if (!this.head) {
+    // The head and tail point to the same new Node
+    this.head = newNode;
+    this.tail = newNode;
+  } else {
+    // Set the previous pointer of the old head to be the new Node
+    this.head.previous = newNode;
+
+    // Set the next pointer of the newly-created Node to be the old head
+    newNode.next = this.head;
+
+    // And set the new head to be the newly-created Node
+    this.head = newNode;
+  }
+
+  // Increment the length of the list
+  this.length++;
+
+  // Finally, returned the Doubly Linked List
+  return this;
+}
+```
+
+### Get
+
+- Accessing a Node in a Doubly Linked List by its position
+- Unlike Singly Linked List where we have to traverse from the beginning of the List until we reach our desired index...
+
+  - We can decide: Should we start at the beginning, or the end of the list? We base this on the desired index provided
+
+- Get Pseudocode:
+  - Valid index? If the index is less than 0 or greater or equal to the length, return null
+  - If the index is less than or equal to half the length of the list
+    - Loop through the list starting from the head and loop towards the middle
+    - Return the Node once it is found
+  - If the index is greater than half the length of the list
+    - Loop through the list starting from the tail and loop towards the middle
+    - Return the Node once it is found
+
+```js
+get(index) {
+  // Check if the index is valid
+  if (index < 0 || index >= this.length) return null;
+
+  let count;
+  let current;
+
+  // If the index is closer to start of the list than the end...
+  if (index <= this.length / 2) {
+    count = 0;
+    current = this.head;
+    while (count != index) {
+      current = current.next;
+      count++;
+    }
+  }
+  // If the index is closer to the end of the list than the start of it...
+  else {
+    count = this.length - 1;
+    current = this.tail;
+    while (count != index) {
+      current = current.previous;
+      count--;
+    }
+  }
+
+  return current;
+}
+```
+
+### Set
+
+- Replacing the value of a Node to a new value in a Doubly Linked List
+- Set Pseudocode:
+  - Create a variable which is the result of the _get_ method at the index passed to the function
+    - If the _get_ method returns a valide Node, set the value of that node to be the value passed to the function
+    - Return true
+  - Otherwise, return false
+
+```js
+set(index, value) {
+  const foundNode = this.get(index);
+  if (foundNode != null) {
+    foundNode.value = value;
+    return true;
+  }
+
+  return false;
+}
+```
+
+### Insert
+
+- Adding a Node in a Doubly Linked List by a certain position
+- Insert Pseudocode:
+  - If the index is less than zero or greater than or equal to the length, return false
+  - If the index is 0, use unshift
+  - If the index is the equal to the length, use push
+  - Otherwise, use the get method to access the index - 1
+  - Set the next and previous properties on the correct Nodes to link everything together
+  - Increment the length
+  - Return true
+
+```js
+insert(index, value) {
+  // Ensure the desired index is valid
+  if (index < 0 || index > this.length) return false;
+
+  // If the list is empty, simply use unshift
+  if (index === 0) return !!this.unshift(value);
+
+  // If we want to insert at the end, simply use push
+  else if (index === this.length) return !!this.push(value);
+
+  // Otherwise, we're inserting in another location: Need new logic!
+  let preNode = get(index - 1);
+  let newNode = new Node(value);
+  let postNode = preNode.next;
+
+  // Update the pre-Node's link - it points next to the newly-created Node
+  preNode.next = newNode;
+
+  // Set the newly-created Node's links
+  newNode.next = postNode;
+  newNode.previous = preNode;
+
+  // Update the post-Node's link - it points previous to the newly-created Node
+  postNode.previous = newNode;
+
+  // Increment the length of the list by 1
+  this.length++;
+
+  return true;
+}
+```
+
+### Remove
+
+- Removing a Node in a Doubly Linked List by a certain position
+- Remove Pseudocode:
+  - If the index is less than zero or greater than or equal to the length, return undefined
+  - If the index is 0, use _shift_
+  - If the index is equal to the length - 1, use _pop_
+  - Otherwise, use the _get_ method to retrieve the item to be removed
+  - Update the next and previous properties to remove the found Node from the list
+  - Set next and previous to null on the found Node
+  - Decrement the length
+  - Return the removed Node
+
+```js
+remove(index) {
+  // Ensure the desired index is valid
+  if (index < 0 || index >= this.length) return undefined;
+
+  // If we want to remove the first item, simply use shift
+  if (index === 0) return this.shift();
+
+  // If we watn to remove the last item, simply use pop
+  if (index === this.length - 1) return this.pop();
+
+  // Otherwise, we wish to remove an item in another locaton: Create new logic for that!
+  let removedNode = this.get(index);
+  let preNode = removedNode.previous;
+  let postNode = removedNode.next;
+
+  // Update the links of the Nodes that come before and after the removed Node
+  preNode.next = postNode;      // May see written as removedNode.prev.next = removedNode.next -- UGLY!
+  postNode.previous = preNode;  // May see written as removedNode.next.prev = removedNode.prev -- UGLY!
+
+  // Clean up the links for the Node we are removing
+  removedNode.next = null;
+  removedNode.previous = null;
+
+  // Decrement the length of the list by 1
+  this.length--;
+
+  return removedNode;
+}
+```
+
+### Comparing Singly & Doubly Linked Lists
+
+- Big O of Doubly Linked Lists
+  - Insertion - O(1) Same as Singly Linked
+  - Removal - O(1) Always! Not the same for Singly, where removal from end is slow
+  - Searching - O(N) (Technically searching is O(N/2), but that's still O(N) like Singly)
+  - Access - O(N)
+- Recap:
+  - Doubly Linked Lists are almost identical to Singly, except there is an additional pointer to previous nodes
+  - Better than Singly for finding nodes and can be done in half the time!
+  - However, they do take up more memory considering the extra pointer
+
 ## Section 21: Stacks and Queues
 
 ### Introduction to Stacks
